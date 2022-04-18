@@ -55,7 +55,7 @@ export const toggleTodo = (todoIdToToggle: any) => {
 
 const Home: NextPage = () => {
   const queryClient = useQueryClient();
-  const {data, isFetching} = useQuery('todos', async() => {
+  const {data} = useQuery('todos', async() => {
     const res = await fetchTodos()
     if (!res) {
       throw new Error('Invalid Query!')
@@ -63,19 +63,19 @@ const Home: NextPage = () => {
     return res
   })
   
-  
   queryClient.setQueryData('todosList',data);
   const todosData:TodosProp = queryClient.getQueryData('todosList') as TodosProp;
+  
 
 
-const handleFilterStateChange = (filterState: string) => {
-  queryClient.setQueryData('todos', (data:any) => {
-    return {
-      ...data,
-      filterChange: filterState
-    }
-  })
-}
+  const handleFilterStateChange = (filterState: string) => {
+    queryClient.setQueryData('todos', (data:any) => {
+      return {
+        ...data,
+        filterChange: filterState
+      }
+    })
+  }
 
   const useTodosToDisplaySelector = useCallback(() => {
     if (todosData){
@@ -101,23 +101,22 @@ const handleFilterStateChange = (filterState: string) => {
     }
   })
 
-  const handleToggle = (id:number) => {
-    mutationToggle.mutate(id)
-  }
-
   const mutationDelete = useMutation((data: number)=>{
-    return deleteTodo(data)
+  return deleteTodo(data)
   }, {
     onSuccess:() => {
       queryClient.invalidateQueries('todos')
     }
   })
 
+  const handleToggle = (id:number) => {
+    mutationToggle.mutate(id)
+  }
+
   const handleDelete = useCallback((id:number) => {
     mutationDelete.mutate(id)
   }, [mutationDelete])
-
-  console.log('hello');
+  
   
   
 
