@@ -1,15 +1,14 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
+import type { NextPage } from 'next'
 import TodoForm from '../components/TodoForm'
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Button from "@material-ui/core/Button";
-import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
-import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined";
-import ClearOutlinedIcon from "@material-ui/icons/ClearOutlined";
 import { useQuery, QueryClient, useQueryClient, useMutation } from 'react-query'
-import axios from 'axios'
 import { TodosProp, Todos } from '../interface/TodosProp'
 import { IconButton } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import ClearOutlinedIcon from "@material-ui/icons/ClearOutlined";
+import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
+import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined";
 
 let todos = [
   { id: 1, body: "Todo 1", isCompleted: false },
@@ -20,7 +19,7 @@ export const fetchTodos = () => {
   return Promise.resolve({todos: todos, filterChange: "ALL"});
 };
 
-export const createTodo = (body: any) => {
+export const createTodo = (body: string) => {
   const newTodo = {
     id: Date.now(),
     body,
@@ -31,13 +30,13 @@ export const createTodo = (body: any) => {
   return Promise.resolve(newTodo);
 };
 
-export const deleteTodo = (todoIdToDelete: any) => {
+export const deleteTodo = (todoIdToDelete: number) => {
   const newTodos = todos.filter((todo) => todo.id !== todoIdToDelete);
   todos = newTodos;
   return Promise.resolve(todoIdToDelete);
 };
 
-export const toggleTodo = (todoIdToToggle: any) => {
+export const toggleTodo = (todoIdToToggle: number) => {
   const newTodos = todos.map((todo) => {
     if (todo.id === todoIdToToggle) {
       return {
@@ -65,11 +64,9 @@ const Home: NextPage = () => {
   
   queryClient.setQueryData('todosList',data);
   const todosData:TodosProp = queryClient.getQueryData('todosList') as TodosProp;
-  
-
 
   const handleFilterStateChange = (filterState: string) => {
-    queryClient.setQueryData('todos', (data:any) => {
+    queryClient.setQueryData('todos', (data : TodosProp | any) => {
       return {
         ...data,
         filterChange: filterState

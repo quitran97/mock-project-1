@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import axios from 'axios'
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -16,7 +16,7 @@ const TodoForm = () => {
             queryClient.invalidateQueries('todos')
         }
     })
-    const handleSubmit = (e:any) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!input) {
@@ -32,16 +32,17 @@ const TodoForm = () => {
   return (
     <form
       className="bg-white w-2/3 mx-auto shadow p-6 rounded-lg"
-      onSubmit={e => handleSubmit(e)}
+      onSubmit={(e) => handleSubmit(e)}
     >
       <header className="text-2xl font-bold text-center">Todo Form</header>
 
       <TextField
-        fullWidth //
+        fullWidth
         id="add-todo-input"
         label="Add Todo"
-        onChange={e => setInput(e.target.value)}
+        onChange={(e : React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setInput(e.target.value)}
         value={input}
+        autoComplete=""
       />
 
       <Button

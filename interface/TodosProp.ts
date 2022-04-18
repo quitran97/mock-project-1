@@ -1,6 +1,6 @@
 export interface TodosProp {
-    todos: Todos[],
-    filterChange: string
+    todos?: Todos[],
+    filterChange?: string
 }
 
 export interface Todos {
