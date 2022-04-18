@@ -1,0 +1,10 @@
+{
+    "mockP" : {
+        "todos" : [
+            {"id":1,"body":"todo 1","isCompleted":false}, 
+            {"id":2,"body":"todo 2","isCompleted":true}
+            
+        ],
+        "filterChange" : "ALL"
+    }
+}
